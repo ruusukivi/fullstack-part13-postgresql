@@ -12,7 +12,7 @@ Install dependences and run the application.
 
     npm start
 
-Run commanline version
+Run commandline version
 
     npm cli
 
@@ -34,5 +34,5 @@ Access database via console
 
 ### Exercises
 
-- Exercise 13.1-13.3 -  Project setup and cli.js
+- [Exercise 13.1-13.3](/tree/13.1-13.3) -  Project setup and cli.js
 - 
