@@ -14,7 +14,7 @@ Install dependences and run the application.
 
 Run commandline version
 
-    npm cli
+    npm run cli
 
 ### Setting up PostgreSQL with Docker
 
