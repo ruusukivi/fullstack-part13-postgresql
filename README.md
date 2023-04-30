@@ -34,5 +34,5 @@ Access database via console
 
 ### Exercises
 
-- [x][Exercise 13.1-13.3](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.1-13.3) -  Project setup and cli.js
-- [ ][Exercise 13.4]()
+- [x] [Exercise 13.1-13.3](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.1-13.3) -  Project setup and cli.js
+- [][Exercise 13.4]()
