@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        console.log(`Posting a blog ${req.body}`)
         const blog = await Blog.create(req.body)
         return res.json(blog.toJSON())
     } catch (error) {
