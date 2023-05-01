@@ -28,8 +28,10 @@ router.put('/:id', async (req, res) => {
     try {
         console.log(`Liking blog ${req.params.id}`)
         const blog = await Blog.findByPk(req.params.id);
-        await blog.increment('likes', { by: 1 });
-        return res.json(blog.toJSON());
+        const updated = await blog.update({
+            likes: req.body.likes
+        })
+        return res.json(updated.toJSON());
     } catch (error) {
         console.error('Error in updating likes:', error);
         return res.status(500).json({ error: 'Error in updating likes' });
