@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "cli": "node cli.js",
+    "note": "node note.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "\"Pia Ruusukivi\"",
