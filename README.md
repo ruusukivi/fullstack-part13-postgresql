@@ -38,5 +38,6 @@ Access database via console
 - [x] [Exercise 13.4](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.4) -  index.js supporting GET, POST, DELETE
 - [x] [Exercise 13.5](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.5) -  improved structure for the app
 - [x] [Exercise 13.6](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.6) -  adding PUT for likes
+- [x] [Exercise 13.7](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.7) -  adding error handler
 
 
