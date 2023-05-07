@@ -15,11 +15,11 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        if(!req.body.uri || !req.body.title){
+        if (!req.body.uri || !req.body.title) {
             throw Error('Posting a blog failed')
         }
         const blog = await Blog.create(req.body)
-        return res.json(blog.toJSON())
+        return res.json(blog)
     } catch (error) {
         next(error)
     }
@@ -28,14 +28,14 @@ router.post('/', async (req, res, next) => {
 const blogFinder = async (req, res, next) => {
     req.blog = await Blog.findByPk(req.params.id)
     next()
-  }
+}
 
-router.put('/:id', blogFinder, async (req, res,next) => {
+router.put('/:id', blogFinder, async (req, res, next) => {
     try {
-        if(!req.blog){
+        if (!req.blog) {
             throw Error('Blog not found')
         }
-        if(!req.body.likes){
+        if (!req.body.likes) {
             throw Error('Amount of likes missing!')
         }
         console.log(`Liking blog ${req.params.id}`)
@@ -43,15 +43,15 @@ router.put('/:id', blogFinder, async (req, res,next) => {
         const updated = await blog.update({
             likes: req.body.likes
         })
-        return res.json(updated.toJSON());
+        return res.json(updated);
     } catch (error) {
         next(error)
     }
 })
 
-router.delete('/:id', blogFinder, async (req, res,next) => {
+router.delete('/:id', blogFinder, async (req, res, next) => {
     try {
-        if(!req.blog){
+        if (!req.blog) {
             throw Error('Blog not found')
         }
         await Blog.destroy({
@@ -59,7 +59,8 @@ router.delete('/:id', blogFinder, async (req, res,next) => {
                 id: req.params.id
             }
         })
-        res.status(204).json({ message: `Blog deleted successfully` });
+        const blogs = await Blog.findAll();
+        res.status(200).json(blogs);
     } catch (error) {
         next(error)
     }
@@ -71,23 +72,31 @@ router.use('/', (req, res, next) => {
 
 router.use((error, req, res, next) => {
     console.error(error.message)
-    if(error.message === 'Endpoint not found'){
-        res.status(404).json({ error: error.message });
-    } 
-    if(error.message === 'Blog not found'){
-        res.status(404).json({ error: `${error.message}. Check the id!` });
-    } 
-    if(error.message === 'Amount of likes missing!'){
-        res.status(403).json({ error: `${error.message}` });
-    } 
-    if(error.message === 'Posting a blog failed'){
-        //res.status(403).json({ error: `${error.message}. Title and url can´t be empty.` });
-    } 
-    else {
+    if (error.message === 'Endpoint not found') {
+        return res.status(404).json({
+            error: error.message
+        });
+    }
+    if (error.message === 'Blog not found') {
+        return res.status(404).json({
+            error: `${error.message}. Check the id!`
+        });
+    }
+    if (error.message === 'Amount of likes missing!') {
+        return res.status(400).json({
+            error: `${error.message}`
+        });
+    }
+    if (error.message === 'Posting a blog failed') {
+        return res.status(400).json({
+            error: `${error.message}. Title and url can´t be empty.`
+        });
+    } else {
         console.log(error.message)
-        res.status(500).json({ error: 'Something went wrong. Please try again!' });
+        return res.status(500).json({
+            error: 'Something went wrong. Please try again!'
+        });
     }
 });
 
 module.exports = router
-
