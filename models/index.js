@@ -1,4 +1,5 @@
 const Blog = require('./blog')
+const User = require('./user')
 
 Blog.sync().then(async () => {
   const count = await Blog.count();
@@ -22,6 +23,8 @@ Blog.sync().then(async () => {
   }
 })
 
+User.sync();
+
 module.exports = {
-  Blog
+  Blog, User
 }
