@@ -44,5 +44,6 @@ Run commandline version (prints existing blogs from the database)
 - [x] [Exercise 13.6](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.6) -  adding PUT for likes
 - [x] [Exercise 13.7](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.7) -  adding error handler
 - [x] [Exercise 13.8](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.8) -  adding user management + tests
+- [x] [Exercise 13.9](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.9) -  adding validation for username
 
 
