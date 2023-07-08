@@ -1,6 +1,4 @@
-const {
-    response
-} = require('express');
+const { response } = require('express');
 const request = require('supertest')
 const baseURL = 'http://localhost:3001/api/users'
 

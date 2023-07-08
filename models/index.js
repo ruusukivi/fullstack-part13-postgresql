@@ -23,8 +23,17 @@ Blog.sync().then(async () => {
   }
 })
 
-User.sync();
+User.sync().then(async () => {
+  const users = await User.count();
+  if (users === 0) {
+    User.bulkCreate([{
+      username: 'tester@tester.com',
+      name: 'Test Tester'
+    }])
+  }
+})
 
 module.exports = {
-  Blog, User
+  Blog,
+  User
 }
