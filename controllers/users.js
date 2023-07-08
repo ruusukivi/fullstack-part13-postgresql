@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
     res.json(user)
   } catch(error) {
     if(error.message){
+      const message = error.message 
       return res.status(400).json({ message })
     }
     return res.status(400).json({ error })
