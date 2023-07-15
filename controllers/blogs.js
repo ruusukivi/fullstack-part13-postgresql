@@ -1,7 +1,19 @@
 const router = require('express').Router()
 
-const { Blog } = require('../models')
+const {
+    Blog,
+    User
+} = require('../models')
 
+const jwt = require('jsonwebtoken')
+
+const getTokenFrom = req => {
+    const authorization = req.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    return null
+}
 
 router.get('/', async (req, res, next) => {
     try {
@@ -13,12 +25,34 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/', async (req, res, next) => {
+const userFinder = async (req, res, next) => {
+    try {
+        const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+        if (!decodedToken.id) {
+            return response.status(401).json({
+                error: 'Token invalid!'
+            })
+        }
+        req.user = await User.findByPk(decodedToken.id)
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+
+router.post('/', userFinder, async (req, res, next) => {
     try {
         if (!req.body.uri || !req.body.title) {
-            throw Error('Posting a blog failed')
+            throw Error('Posting a blog failed!')
         }
-        const blog = await Blog.create(req.body)
+        if (!req.user) {
+            throw Error('No user found!')
+        }
+        const user = await User.findOne()
+        const blog = await Blog.create({
+            ...req.body,
+            userId: req.user.id
+        })
         return res.json(blog)
     } catch (error) {
         next(error)
@@ -33,7 +67,7 @@ const blogFinder = async (req, res, next) => {
 router.put('/:id', blogFinder, async (req, res, next) => {
     try {
         if (!req.blog) {
-            throw Error('Blog not found')
+            throw Error('Blog not found!')
         }
         if (!req.body.likes) {
             throw Error('Amount of likes missing!')
@@ -49,10 +83,14 @@ router.put('/:id', blogFinder, async (req, res, next) => {
     }
 })
 
-router.delete('/:id', blogFinder, async (req, res, next) => {
+router.delete('/:id', blogFinder, userFinder, async (req, res, next) => {
     try {
         if (!req.blog) {
-            throw Error('Blog not found')
+            throw Error('Blog not found!')
+        }
+
+        if (!(req.blog.userId == req.user.id)) {
+            throw Error('Only author can delete!')
         }
         await Blog.destroy({
             where: {
@@ -67,19 +105,30 @@ router.delete('/:id', blogFinder, async (req, res, next) => {
 })
 
 router.use('/', (req, res, next) => {
-    throw Error('Endpoint not found')
+    throw Error('Endpoint not found!')
 });
 
 router.use((error, req, res, next) => {
     console.error(error.message)
-    if (error.message === 'Endpoint not found') {
+    if (error.message === 'Endpoint not found!') {
         return res.status(404).json({
             error: error.message
         });
     }
-    if (error.message === 'Blog not found') {
+    if (error.message === 'Blog not found!') {
         return res.status(404).json({
-            error: `${error.message}. Check the id!`
+            error: `${error.message} Check the id!`
+        });
+    }
+    if (error.message === 'No user found!') {
+        return res.status(404).json({
+            error: `${error.message} Please log in to post.!`
+        });
+    }
+
+    if (error.message === 'Only author can delete!') {
+        return res.status(404).json({
+            error: `${error.message}.`
         });
     }
     if (error.message === 'Amount of likes missing!') {
@@ -89,7 +138,7 @@ router.use((error, req, res, next) => {
     }
     if (error.message === 'Posting a blog failed') {
         return res.status(400).json({
-            error: `${error.message}. Title and url can´t be empty.`
+            error: `${error.message} Title and url can´t be empty.`
         });
     } else {
         console.log(error.message)
