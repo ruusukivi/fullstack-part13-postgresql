@@ -5,17 +5,16 @@ const { sequelize } = require('../utils/db')
 router.get('/', async (req, res, next) => {
     try {
         const authors = await Blog.findAll({
-            group: 'author',
             attributes: [
-                [   'author',
-                    [sequelize.fn('COUNT', sequelize.col('title')), 'articles'],
-                    [sequelize.fn('COUNT', sequelize.col('likes')), 'likes']
-                ]
+              'author',
+              [sequelize.fn('COUNT', sequelize.col('*')), 'articles'],
+              [sequelize.fn('SUM', sequelize.col('likes')), 'likes'],
             ],
+            group: 'author',
             order: [
-                ['likes', 'DESC'],
-            ]
-        })
+              ['likes', 'DESC'],
+            ],
+          });
         res.json(authors)
     } catch (error) {
         console.log(error.message)

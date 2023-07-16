@@ -3,8 +3,8 @@ const errorHandler = require('errorhandler');
 
 const app = express()
 
-const { PORT } = require('./util/config')
-const { connectToDatabase } = require('./util/db')
+const { PORT } = require('./utils/config')
+const { connectToDatabase } = require('./utils/db')
 
 const blogsRouter = require('./controllers/blogs')
 const authorsRouter = require('./controllers/authors')
