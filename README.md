@@ -48,5 +48,6 @@ Run commandline version (prints existing blogs from the database)
 - [x] [Exercise 13.10](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.10) -  adding login endpoint 
 - [x] [Exercise 13.11-13.12](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.11) - adding user info to blogs and deletion
 - [x] [Exercise 13.13](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.13) -  adding filtering by keyword
+- [x] [Exercise 13.14](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.14) -  expanded filtering
 
 
