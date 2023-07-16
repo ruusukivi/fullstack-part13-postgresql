@@ -1,11 +1,6 @@
 const router = require('express').Router()
-const {
-    Blog,
-    User
-} = require('../models')
-const {
-    Op
-} = require("sequelize");
+const { Blog, User } = require('../models')
+const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken')
 
 const getTokenFrom = req => {
@@ -15,7 +10,6 @@ const getTokenFrom = req => {
     }
     return null
 }
-
 
 router.get('/', async (req, res, next) => {
     try {
