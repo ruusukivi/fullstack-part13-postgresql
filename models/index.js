@@ -4,6 +4,8 @@ const User = require('./user')
 User.hasMany(Blog)
 Blog.belongsTo(User)
 
+
+
 /*const addTestUser = async () => {
   const users = await User.count();
   if (users === 0) {

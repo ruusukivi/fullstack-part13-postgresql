@@ -22,7 +22,6 @@ const runMigrations = async () => {
   })
 }
 
-
 const connectToDatabase = async () => {
   try {
     await sequelize.authenticate()

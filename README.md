@@ -52,4 +52,5 @@ Run commandline version (prints existing blogs from the database)
 - [x] [Exercise 13.15](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.15) -  sorting blogs based on likes in descending order
 - [x] [Exercise 13.16](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.16) -  added authors endpoint
 - [x] [Exercise 13.17](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.17) -  added migrations
+- [x] [Exercise 13.18](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.18) -  added year column to blogs
 

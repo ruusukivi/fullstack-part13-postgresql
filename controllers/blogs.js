@@ -3,6 +3,8 @@ const { Blog, User } = require('../models')
 const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken')
 
+const currentYear = new Date().getFullYear();
+
 const getTokenFrom = req => {
     const authorization = req.get('authorization')
     if (authorization && authorization.startsWith('Bearer ')) {
@@ -70,9 +72,13 @@ router.post('/', userFinder, async (req, res, next) => {
         if (!req.body.uri || !req.body.title) {
             throw Error('Posting a blog failed!')
         }
+        if (!req.body.year || req.body.year < 1991 || req.body.year > currentYear ) {
+            throw Error('The year should be at least 1991 and no greater than current year!')
+        }
         if (!req.user) {
             throw Error('No user found!')
         }
+
         const user = await User.findOne()
         const blog = await Blog.create({
             ...req.body,
@@ -147,7 +153,7 @@ router.use((error, req, res, next) => {
     }
     if (error.message === 'No user found!') {
         return res.status(404).json({
-            error: `${error.message} Please log in to post.!`
+            error: `${error.message} Please log in to post!`
         });
     }
 
@@ -164,6 +170,11 @@ router.use((error, req, res, next) => {
     if (error.message === 'Posting a blog failed') {
         return res.status(400).json({
             error: `${error.message} Title and url can´t be empty.`
+        });
+    }
+    if (error.message === 'The year should be at least 1991 and no greater than current year!') {
+        return res.status(400).json({
+            error: error.message
         });
     } else {
         console.log(error.message)
