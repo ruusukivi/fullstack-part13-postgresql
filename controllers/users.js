@@ -64,7 +64,10 @@ router.get('/:id', async (req, res, next) => {
         model: Blog,
         as: 'readings',
         attributes: ['id', 'author', 'title', 'uri', 'likes', 'year'],
-        through: { attributes: [] }, 
+        through: {
+          as: 'reading_list',
+          attributes: ['id', 'read']
+        }
       }],
     })
     if (!user) {
