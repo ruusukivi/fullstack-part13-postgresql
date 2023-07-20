@@ -55,3 +55,4 @@ Run commandline version (prints existing blogs from the database)
 - [x] [Exercise 13.18](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.18) -  adding  year column to blogs
 - [x] [Exercise 13.19](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.19) -  adding  reading lists
 - [x] [Exercise 13.20](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.20) -  adding  apis for reading lists
+- [x] [Exercise 13.21](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.20) -  adding info if the blog is read
