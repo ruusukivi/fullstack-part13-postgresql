@@ -5,8 +5,8 @@ const List = require('./list')
 User.hasMany(Blog)
 Blog.belongsTo(User)
 
-User.belongsToMany(Blog, { through: List })
-Blog.belongsToMany(User, { through: List })
+User.belongsToMany(Blog, { through: List, as: 'readings' })
+Blog.belongsToMany(User, { through: List, as: 'reading_list' })
 
 module.exports = {
   Blog,

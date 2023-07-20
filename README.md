@@ -50,8 +50,8 @@ Run commandline version (prints existing blogs from the database)
 - [x] [Exercise 13.13](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.13) -  adding filtering by keyword
 - [x] [Exercise 13.14](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.14) -  expanded filtering
 - [x] [Exercise 13.15](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.15) -  sorting blogs based on likes in descending order
-- [x] [Exercise 13.16](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.16) -  added authors endpoint
-- [x] [Exercise 13.17](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.17) -  added migrations
-- [x] [Exercise 13.18](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.18) -  added year column to blogs
-- [x] [Exercise 13.19](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.19) -  added reading lists
-
+- [x] [Exercise 13.16](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.16) -  adding  authors endpoint
+- [x] [Exercise 13.17](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.17) -  adding migrations
+- [x] [Exercise 13.18](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.18) -  adding  year column to blogs
+- [x] [Exercise 13.19](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.19) -  adding  reading lists
+- [x] [Exercise 13.20](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.20) -  adding  apis for reading lists
