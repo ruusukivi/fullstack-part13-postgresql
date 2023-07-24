@@ -10,7 +10,7 @@ const blogsRouter = require('./controllers/blogs')
 const authorsRouter = require('./controllers/authors')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
-const listRouter = require('./controllers/list')
+const listRouter = require('./controllers/lists')
 
 app.use(express.json())
 

@@ -56,3 +56,5 @@ Run commandline version (prints existing blogs from the database)
 - [x] [Exercise 13.19](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.19) -  adding  reading lists
 - [x] [Exercise 13.20](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.20) -  adding  apis for reading lists
 - [x] [Exercise 13.21](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.20) -  adding info if the blog is read
+- [x] [Exercise 13.21](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.20) -  adding functionality to mark a blog in the reading list as read
+- [x] [Exercise 13.22](https://github.com/ruusukivi/fullstack-part13-postgresql/tree/13.22) -  updating the read status in reading list
