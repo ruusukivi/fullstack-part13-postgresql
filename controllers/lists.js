@@ -1,15 +1,15 @@
 const router = require('express').Router()
-const {
-    List,
-    User
-} = require('../models')
-const {
-    sequelize
-} = require('../utils/db')
-const userFinder = require('../utils/userfinder')
+const { List } = require('../models')
+const userFinder = require('../utils/findUser')
 
-router.post('/', async (req, res, next) => {
+router.post('/', userFinder, async (req, res, next) => {
     try {
+        if (!req.user) {
+            throw Error('No user found!')
+        }
+        if(!(req.user.id == req.body.userId)){
+            throw Error('You can only update your own reading list!')
+        }
         const list = await List.create(req.body)
         res.json(list)
     } catch (error) {
@@ -19,6 +19,9 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id', userFinder, async (req, res, next) => {
     try {
+        if (!req.user) {
+            throw Error('No user found!')
+        }
         const { read } = req.body
         const id = req.params.id
         const list = await List.findByPk(id)
@@ -27,11 +30,12 @@ router.put('/:id', userFinder, async (req, res, next) => {
         if (!(currentId === listUserId)) {
             throw Error('You can only update your own reading list!')
         }
-        const updatedList = await List.update({ read: read }, {
+        const updated = await List.update({ read: read }, {
             where: {
                 id: id
             }
         })
+        const updatedList = await List.findByPk(id)
         res.json(updatedList)
     } catch (error) {
         next(error)
@@ -41,8 +45,13 @@ router.put('/:id', userFinder, async (req, res, next) => {
 router.use((error, req, res, next) => {
     console.error(error.message)
     if (error.message === 'You can only update your own reading list!') {
-        return res.status(403).json({
+        return res.status(401).json({
             error: error.message
+        });
+    } 
+    if (error.message === 'No user found!') { 
+        return res.status(401).json({
+            error: `${error.message} Please log in to update list!`
         });
     } else {
         console.log(error.message)

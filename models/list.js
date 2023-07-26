@@ -1,5 +1,4 @@
 const { Model, DataTypes } = require('sequelize')
-
 const { sequelize } = require('../utils/db')
 
 class List extends Model {}
@@ -10,7 +9,6 @@ List.init({
     primaryKey: true,
     autoIncrement: true
   },
-
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

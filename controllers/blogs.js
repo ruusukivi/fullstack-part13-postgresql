@@ -1,22 +1,14 @@
 const router = require('express').Router()
 const { Blog, User } = require('../models')
 const { Op } = require("sequelize");
-const jwt = require('jsonwebtoken')
+const userFinder = require('../utils/findUser');
+const blogFinder = require('../utils/findBlog');
 
 const currentYear = new Date().getFullYear();
-
-const getTokenFrom = req => {
-    const authorization = req.get('authorization')
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-    }
-    return null
-}
 
 router.get('/', async (req, res, next) => {
     try {
         let where = {}
-
         if (req.query.search) {
             where = {
                 [Op.or]: [{
@@ -32,7 +24,6 @@ router.get('/', async (req, res, next) => {
                 ]
             }
         }
-
         const blogs = await Blog.findAll({
             attributes: {
                 exclude: ['userId']
@@ -52,34 +43,17 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-const userFinder = async (req, res, next) => {
-    try {
-        const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
-        if (!decodedToken.id) {
-            return response.status(401).json({
-                error: 'Token invalid!'
-            })
-        }
-        req.user = await User.findByPk(decodedToken.id)
-        next()
-    } catch (error) {
-        next(error)
-    }
-}
-
 router.post('/', userFinder, async (req, res, next) => {
     try {
+        if (!req.user) {
+            throw Error('No user found!')
+        }
         if (!req.body.uri || !req.body.title) {
             throw Error('Posting a blog failed!')
         }
         if (!req.body.year || req.body.year < 1991 || req.body.year > currentYear ) {
             throw Error('The year should be at least 1991 and no greater than current year!')
         }
-        if (!req.user) {
-            throw Error('No user found!')
-        }
-
-        const user = await User.findOne()
         const blog = await Blog.create({
             ...req.body,
             userId: req.user.id
@@ -89,11 +63,6 @@ router.post('/', userFinder, async (req, res, next) => {
         next(error)
     }
 })
-
-const blogFinder = async (req, res, next) => {
-    req.blog = await Blog.findByPk(req.params.id)
-    next()
-}
 
 router.put('/:id', blogFinder, async (req, res, next) => {
     try {
@@ -114,12 +83,14 @@ router.put('/:id', blogFinder, async (req, res, next) => {
     }
 })
 
-router.delete('/:id', blogFinder, userFinder, async (req, res, next) => {
+router.delete('/:id', userFinder, blogFinder, async (req, res, next) => {
     try {
+        if (!req.user) {
+            throw Error('No user found!')
+        }
         if (!req.blog) {
             throw Error('Blog not found!')
         }
-
         if (!(req.blog.userId == req.user.id)) {
             throw Error('Only author can delete!')
         }
@@ -151,15 +122,29 @@ router.use((error, req, res, next) => {
             error: `${error.message} Check the id!`
         });
     }
+    if (error.message === 'Session not valid!') {
+        return res.status(401).json({
+            error: error.message
+        });
+    }
     if (error.message === 'No user found!') {
-        return res.status(404).json({
+        return res.status(401).json({
             error: `${error.message} Please log in to post!`
         });
     }
-
     if (error.message === 'Only author can delete!') {
-        return res.status(404).json({
-            error: `${error.message}.`
+        return res.status(401).json({
+            error: `${error.message}`
+        });
+    }
+    if (error.message === 'User disabled!') {
+        return res.status(401).json({
+            error: error.message
+        });
+    }
+    if (error.message === 'invalid signature') {
+        return res.status(401).json({
+            error: 'Session or token not valid! Log in again!'
         });
     }
     if (error.message === 'Amount of likes missing!') {
@@ -177,7 +162,6 @@ router.use((error, req, res, next) => {
             error: error.message
         });
     } else {
-        console.log(error.message)
         return res.status(500).json({
             error: 'Something went wrong. Please try again!'
         });
