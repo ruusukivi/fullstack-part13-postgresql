@@ -11,7 +11,6 @@ const getTokenFrom = req => {
 }
 
 const findUser = async (req, res, next) => {
-    console.log("User finder")
     try {
         const token = getTokenFrom(req)
         const decodedToken = jwt.verify(token, process.env.SECRET)
